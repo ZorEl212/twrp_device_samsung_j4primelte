@@ -1,9 +1,9 @@
 # mount point		fstype		device					device2					flags
 /boot				emmc		/dev/block/bootdevice/by-name/boot
-/system				ext4		/dev/block/bootdevice/by-name/system
-/system_image		emmc		/dev/block/bootdevice/by-name/system			flags=backup=1;flashimg=1
+/system_root				ext4		/dev/block/bootdevice/by-name/system			flags=display="Vendor";backup=1;wipeingui,
 /vendor				ext4		/dev/block/bootdevice/by-name/vendor			flags=display="Vendor";backup=1;wipeingui
-/vendor_image		emmc		/dev/block/bootdevice/by-name/vendor			flags=backup=1;flashimg=1
+/super 		emmc 		/dev/block/by-name/system 				flags=display="Super";backup=1,logical,first_stage_mount
+/super_vendor		emmc		/dev/block/by-name/vendor				flags=display="super_vendor";backup=1,logical,first_stage_mount
 /cache				ext4		/dev/block/bootdevice/by-name/cache
 /recovery			emmc		/dev/block/bootdevice/by-name/recovery			flags=backup=1
 /efs				emmc		/dev/block/bootdevice/by-name/modemst1			flags=backup=1;display=EFS

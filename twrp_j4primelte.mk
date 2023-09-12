@@ -21,6 +21,10 @@ $(call inherit-product, vendor/twrp/config/common.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 
+#Dynamic partitions
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+PRODUCT_RETROFIT_DYNAMIC_PARTITIONS := true
+
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.keystore=mdfpp \
     ro.hardware.gatekeeper=mdfpp \
