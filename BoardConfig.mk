@@ -104,6 +104,7 @@ TW_DEVICE_VERSION := kycii91
 
 #Debug
 TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
 
 # Assert
 TARGET_OTA_ASSERT_DEVICE := j4primelte
