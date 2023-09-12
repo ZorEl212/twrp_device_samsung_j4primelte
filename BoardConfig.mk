@@ -53,7 +53,7 @@ BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
 
 # Common fstab and init.rc files
-TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery/root/system/etc/twrp.flags
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery/root/system/etc/twrp.fstab
 
 # File systems
 BOARD_HAS_LARGE_FILESYSTEM := true
@@ -101,6 +101,9 @@ RECOVERY_SDCARD_ON_DATA := true
 TW_USE_TOOLBOX := true
 TW_CUSTOM_CPU_TEMP_PATH := "/sys/devices/virtual/thermal/thermal_zone11/temp"
 TW_DEVICE_VERSION := kycii91
+
+#Debug
+TWRP_INCLUDE_LOGCAT := true
 
 # Assert
 TARGET_OTA_ASSERT_DEVICE := j4primelte
