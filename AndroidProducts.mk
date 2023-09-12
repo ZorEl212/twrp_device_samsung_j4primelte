@@ -16,4 +16,4 @@
 
 LOCAL_PATH := device/samsung/j4primelte/
 
-PRODUCT_MAKEFILES := $(LOCAL_PATH)/omni_j4primelte.mk
+PRODUCT_MAKEFILES := $(LOCAL_PATH)/twrp_j4primelte.mk

@@ -14,9 +14,22 @@
 # limitations under the License.
 #
 
-# Kernel
-TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/kernel
-BOARD_KERNEL_CMDLINE := console=null androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 buildvariant=eng androidboot.selinux=permissive
-BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_PAGESIZE := 2048
-BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02000000 --tags_offset 0x01e00000
+# Inherit some common Omni stuff.
+$(call inherit-product, vendor/twrp/config/common.mk)
+
+# Inherit language packages
+$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
+
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hardware.keystore=mdfpp \
+    ro.hardware.gatekeeper=mdfpp \
+    ro.security.keystore.keytype=gak
+
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
+
+PRODUCT_DEVICE := j4primelte
+PRODUCT_NAME := twrp_j4primelte
+PRODUCT_BRAND := Samsung
+PRODUCT_MODEL := Samsung Galaxy J4+
+PRODUCT_MANUFACTURER := samsung

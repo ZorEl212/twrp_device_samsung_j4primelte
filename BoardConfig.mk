@@ -16,8 +16,10 @@
 
 LOCAL_PATH := device/samsung/j4primelte
 
-# Inherit from common msm8917-common
--include device/samsung/msm8917-common/BoardConfigCommon.mk
+# For building with minimal manifest
+ALLOW_MISSING_DEPENDENCIES := true
+
+TARGET_SUPPORTS_64_BIT_APPS := false
 
 # Architecture
 TARGET_ARCH := arm64
@@ -34,8 +36,45 @@ TARGET_2ND_CPU_VARIANT := cortex-a53
 TARGET_BOARD_SUFFIX := _64
 TARGET_USES_64_BIT_BINDER := true
 
+# Bootloader
+TARGET_NO_BOOTLOADER := true
+TARGET_BOOTLOADER_BOARD_NAME := RG13A002KU
+
+# Partitions
+BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 33554432
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2453520000
+BOARD_VENDORIMAGE_PARTITION_SIZE := 295698432
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 13260152832 # 13260271616 - 32768
+									  
+BOARD_CACHEIMAGE_PARTITION_SIZE := 73400320
+BOARD_PERSISTIMAGE_PARTITION_SIZE := 33554432
+BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
+BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
+
+# Common fstab and init.rc files
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery/root/system/etc/twrp.flags
+
+# File systems
+BOARD_HAS_LARGE_FILESYSTEM := true
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
+BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
+
+# Platform
+TARGET_BOARD_PLATFORM := msm8937
+TARGET_BOARD_PLATFORM_GPU := qcom-adreno308
+
+# Workaround for error copying vendor files to recovery ramdisk
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+TARGET_COPY_OUT_VENDOR := vendor
+
 #kernel
-include $(LOCAL_PATH)/kernel.mk
+TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/Image.gz
+BOARD_KERNEL_CMDLINE := console=null androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 buildvariant=eng androidboot.selinux=enforcing
+BOARD_KERNEL_BASE := 0x80000000
+BOARD_KERNEL_PAGESIZE := 2048
+BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02000000 --tags_offset 0x01e00000
 
 # TWRP-configs
 TARGET_USERIMAGES_USE_EXT4 := true
@@ -51,8 +90,6 @@ TW_NO_REBOOT_BOOTLOADER := true
 TW_HAS_DOWNLOAD_MODE := true
 TW_MAX_BRIGHTNESS := 255
 TW_DEFAULT_BRIGHTNESS := 150
-TW_EVENT_LOGGING := true
-TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_NTFS_3G := true
 TW_THEME := portrait_hdpi
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
@@ -64,6 +101,7 @@ RECOVERY_SDCARD_ON_DATA := true
 TW_USE_TOOLBOX := true
 TW_CUSTOM_CPU_TEMP_PATH := "/sys/devices/virtual/thermal/thermal_zone11/temp"
 TW_DEVICE_VERSION := kycii91
+TW_EXCLUDE_NANO := true
 
 # Assert
 TARGET_OTA_ASSERT_DEVICE := j4primelte
