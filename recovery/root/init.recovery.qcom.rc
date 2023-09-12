@@ -1,4 +1,4 @@
-import init.recovery.qcom_decrypt.rc
+#import init.recovery.qcom_decrypt.rc
 
 on boot
 
@@ -16,19 +16,19 @@ on fs
     export ANDROID_ROOT /system_root
 #    export LD_CONFIG_FILE /sbin/ld.config.txt
 
-    chmod 0660 /dev/qseecom
-    chown system drmrpc /dev/qseecom
-    chmod 0664 /dev/ion
-    chown system system /dev/ion
-    install_keyring
+#    chmod 0660 /dev/qseecom
+#    chown system drmrpc /dev/qseecom
+#    chmod 0664 /dev/ion
+#    chown system system /dev/ion
+#    install_keyring
 
-on init
-    wait /dev/block/bootdevice/by-name/system
-    wait /dev/block/bootdevice/by-name/vendor
+#on init
+ #   wait /dev/block/bootdevice/by-name/system
+ #   wait /dev/block/bootdevice/by-name/vendor
 
-    start hwservicemanager
-    start prepdecrypt
-    start time_daemon
+#    start hwservicemanager
+#    start prepdecrypt
+#    start time_daemon
 
 on post-fs-data
     # set aggressive read ahead for dm-0 and dm-1 during boot up
@@ -36,45 +36,45 @@ on post-fs-data
     write /sys/block/dm-1/queue/read_ahead_kb 2048
 
 # Separate copy needed to use /sbin/linker64 instead of /system/bin/linker64
-service qseecomd /system/bin/qseecomd
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
+#service qseecomd /system/bin/qseecomd
+#    user root
+#    group root
+#    disabled
+#    seclabel u:r:recovery:s0
 
-service prepdecrypt /sbin/prepdecrypt.sh
-    oneshot
-    disabled
-    user root
-    group root
-    seclabel u:r:recovery:s0
+#service prepdecrypt /sbin/prepdecrypt.sh
+#    oneshot
+#    disabled
+#    user root
+#    group root
+#    seclabel u:r:recovery:s0
 
-service hwservicemanager /system/bin/hwservicemanager
-    user root
-    group root
-    disabled
-    onrestart setprop hwservicemanager.ready false
-    seclabel u:r:recovery:s0
+#service hwservicemanager /system/bin/hwservicemanager
+#    user root
+#    group root
+#    disabled
+#    onrestart setprop hwservicemanager.ready false
+#    seclabel u:r:recovery:s0
 
-service servicemanager /system/bin/servicemanager
-    user root
-    group root readproc
-    disabled
-    seclabel u:r:recovery:s0
+#service servicemanager /system/bin/servicemanager
+#    user root
+#    group root readproc
+#    disabled
+#    seclabel u:r:recovery:s0
 
-service keystore_auth /system/bin/keystore_auth
-    oneshot
-    user system
-    group root
-    disabled
-    seclabel u:r:recovery:s0
+#service keystore_auth /system/bin/keystore_auth
+#    oneshot
+#    user system
+#    group root
+#    disabled
+#    seclabel u:r:recovery:s0
 
 # keystore is started and stopped on demand by TWRP
-service keystore /system/bin/keystore /tmp/misc/keystore
-    user root
-    group root drmrpc readproc
-    disabled
-    seclabel u:r:recovery:s0
+#service keystore /system/bin/keystore /tmp/misc/keystore
+#    user root
+#   group root drmrpc readproc
+#    disabled
+#    seclabel u:r:recovery:s0
 
 #service gatekeeper-1-0 /system/bin/android.hardware.gatekeeper@1.0-service
 #    user root
@@ -82,11 +82,11 @@ service keystore /system/bin/keystore /tmp/misc/keystore
 #    disabled
 #    seclabel u:r:recovery:s0
 
-service keymaster-3-0 /system/bin/android.hardware.keymaster@3.0-service
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
+#service keymaster-3-0 /system/bin/android.hardware.keymaster@3.0-service
+#    user root
+#    group root
+#    disabled
+#    seclabel u:r:recovery:s0
 
 #service ldconfigtxt /system/bin/touch /etc/ld.config.txt
 #    oneshot
@@ -101,24 +101,24 @@ service time_daemon /system/bin/time_daemon
 on boot
     setprop sys.usb.config adb
 
-on property:crypto.ready=0
-    stop qseecomd
-    stop keymaster-3-0
+#on property:crypto.ready=0
+#    stop qseecomd
+#    stop keymaster-3-0
 #    stop gatekeeper-1-0
-    stop servicemanager
+#    stop servicemanager
 
-on property:crypto.ready=1
-    start qseecomd
+#on property:crypto.ready=1
+ #   start qseecomd
 
-on property:crypto.ready=1 && property:vendor.sys.listeners.registered=true
-    start keymaster-3-0
+#on property:crypto.ready=1 && property:vendor.sys.listeners.registered=true
+#    start keymaster-3-0
 ##    start gatekeeper-1-0
-    start servicemanager
-
-on property:ro.crypto.state=encrypted
-    start qseecomd
-    start keymaster-3-0
-	start servicemanager
+#   start servicemanager
+#
+#on property:ro.crypto.state=encrypted
+#    start qseecomd
+#    start keymaster-3-0
+#	start servicemanager
 
 on property:sys.usb.config=mtp,adb
     restart time_daemon
